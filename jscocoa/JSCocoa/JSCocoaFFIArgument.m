@@ -594,11 +594,15 @@
 		case	_C_SEL:
 		{
 			SEL sel = *(SEL*)ptr;
-			id str = NSStringFromSelector(sel);
-//			JSStringRef jsName = JSStringCreateWithUTF8CString([str UTF8String]);
-			JSStringRef	jsName = JSStringCreateWithCFString((CFStringRef)str);
-			*value = JSValueMakeString(ctx, jsName);
-			JSStringRelease(jsName);
+            if (sel) {
+                id str = NSStringFromSelector(sel);
+                //			JSStringRef jsName = JSStringCreateWithUTF8CString([str UTF8String]);
+                JSStringRef	jsName = JSStringCreateWithCFString((CFStringRef)str);
+                *value = JSValueMakeString(ctx, jsName);
+                JSStringRelease(jsName);
+            } else {
+                *value = JSValueMakeNull(ctx);
+            }
 			return	YES;
 		}
 		case	_C_BOOL:
