@@ -42,26 +42,6 @@ static TDTokenEOF *EOFToken = nil;
 }
 
 
-- (id)retain {
-    return self;
-}
-
-
-- (oneway void)release {
-    // do nothing
-}
-
-
-- (id)autorelease {
-    return self;
-}
-
-
-- (NSUInteger)retainCount {
-    return UINT_MAX; // denotes an object that cannot be released
-}
-
-
 - (NSString *)description {
     return [NSString stringWithFormat:@"<TDTokenEOF %p>", self];
 }

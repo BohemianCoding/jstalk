@@ -239,14 +239,16 @@
     
     if (focusedUIElement) {
         
+        CFArrayRef attributeNamesRef;
         NSArray* attributeNames;
-        AXUIElementCopyAttributeNames(focusedUIElement, (CFArrayRef *)&attributeNames);
+        AXUIElementCopyAttributeNames(focusedUIElement, &attributeNamesRef);
+        attributeNames = (__bridge NSArray*)attributeNamesRef;
         
         for (NSString *attName in attributeNames) {
             
             CFTypeRef attValue;
             
-            AXError lerror = AXUIElementCopyAttributeValue(focusedUIElement, (CFStringRef)attName, &attValue);
+            AXError lerror = AXUIElementCopyAttributeValue(focusedUIElement, (__bridge CFStringRef)attName, &attValue);
             if (!lerror) {
                 
                 if ((AXValueGetType(attValue) == kAXValueCGPointType)) {
@@ -270,7 +272,7 @@
                     [d setObject:[NSValue valueWithRange:r] forKey:attName];
                 }
                 else {
-                    [d setObject:(id)attValue forKey:attName];
+                    [d setObject:(__bridge id)attValue forKey:attName];
                 }
                 
                 CFRelease(attValue);
@@ -279,7 +281,7 @@
         }
         
         if (attributeNames) {
-            CFRelease(attributeNames);
+            CFRelease(attributeNamesRef);
         }
         
         CFRelease(focusedUIElement);
@@ -304,7 +306,7 @@
     
     if (focusedUIElement) {
         
-        AXUIElementSetAttributeValue(focusedUIElement, kAXSelectedTextAttribute, s);
+        AXUIElementSetAttributeValue(focusedUIElement, kAXSelectedTextAttribute, (__bridge CFTypeRef)(s));
         
         CFRelease(focusedUIElement);
     }

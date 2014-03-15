@@ -56,11 +56,11 @@
 {
 	JSValueRefAndContextRef r;
 
-	id	jsc = nil;
-	object_getInstanceVariable(self, "__jsCocoaController", (void**)&jsc);
+	void*	jsc = nil;
+	object_getInstanceVariable(self, "__jsCocoaController", &jsc);
 	if (!jsc)	return r;
 	
-	r.ctx	= [jsc ctx];
+	r.ctx	= [(__bridge id)jsc ctx];
 	r.value	= [self outJSValueRefInContext:r.ctx];
 
 	return r;

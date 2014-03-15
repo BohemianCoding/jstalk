@@ -225,7 +225,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
     JSObjectRef jsObject            = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-    JSCocoaPrivateObject *private   = JSObjectGetPrivate(jsObject);
+    JSCocoaPrivateObject *private   = (__bridge JSCocoaPrivateObject *)(JSObjectGetPrivate(jsObject));
     private.type = @"@";
     [private setObject:obj];
     

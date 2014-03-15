@@ -90,16 +90,6 @@
 - (void)setObject:(id)o
 {
 	object = o;
-	if (object && [object retainCount] == -1)	return;
-    
-    // you can't retain this guy.
-    #pragma message "FIXME: What about if the script calls release on this object?"
-    if ([object isKindOfClass:[NSAutoreleasePool class]]) {
-        NSLog(@"Warning: we're probably going to crash pretty soon, for setting up an autorelease pool on the JS side.");
-        return;
-    }
-    
-	[object retain];
 }
 
 - (void)setObjectNoRetain:(id)o
@@ -221,14 +211,14 @@
 - (id)dereferencedObject
 {
 	if (![type isEqualToString:@"rawPointer"] || !rawPointer)	return nil;
-	return *(void**)rawPointer;
+	return (__bridge id)(*(void**)rawPointer);
 }
 
 - (BOOL)referenceObject:(id)o
 {
 	if (![type isEqualToString:@"rawPointer"])	return NO;
 //	void* v = *(void**)rawPointer;
-	*(id*)rawPointer = o;
+	*(void**)rawPointer = (__bridge void*)o;
 	return	YES;
 }
 
